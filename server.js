@@ -7,13 +7,18 @@ var myRegexDate = /^[a-zA-Z]{3,9} (0[1-9]|1[0-9]|2[0-9]|3[0-1]|[1-9]), [0-9]{1,4
 var myRegexNum = /^[0-9]{1,}$/
 
 
+app.get('/', function (req, res) {
+	
+	res.end('Welcome to my first NodeJS web application')
+})
+
 app.get('/:value', function (req, res) {
 
     console.log('REQUEST : '+req.params.value)
 
     //testing
     if (myRegexDate.test(req.params.value)){
-    	//TODO : 1st feature
+    	
     	console.log('1st FEATURE  : Date -> UnixTime')
     	// spliting paramters
         var spliting = req.params.value.split(',')
@@ -33,17 +38,49 @@ app.get('/:value', function (req, res) {
         var unixtime = new Date(date_str).getTime() / 1000
 
         console.log('unixtime : '+unixtime)
+
+        if(unixtime != 0){
+        	//building response
+        	data = {
+        		'unix': unixtime,
+        		'natural': req.params.value
+        	}
+
+        	res.json(data)
+        }
+        else{
+        	var data = {
+    			'unix': null,
+    			'natural': null
+			}
+        	res.json(data)
+        }
+
+        
     }
 
     else if(myRegexNum.test(req.params.value)){
-    	//TODO : 2nd feature
+
     	console.log('2nd FEATURE  : UnixTime -> Date')
-    }
-    else{
+
+    	var unixtime = parseInt(req.params.value)
+
+    	var date = transform.numToDate(unixtime)
+
     	data = {
+    		'unix': unixtime,
+    		'natural': date
+    	}
+
+    	res.json(data)
+    }
+    
+    else{
+
+    	var data = {
     		'unix': null,
     		'natural': null
-    	}
+		}
 
     	res.json(data)
     }
