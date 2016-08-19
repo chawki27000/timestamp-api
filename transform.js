@@ -1,4 +1,4 @@
-exports.mounthToNum = function (str) {
+exports.monthToNum = function (str) {
 	
 	if (str.toUpperCase() === 'JANUARY'){
 		return 1;
